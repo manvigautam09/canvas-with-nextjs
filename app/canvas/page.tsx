@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, MouseEvent } from "react";
+import RectangleInputs from "../components/RectangleInputs";
 
 interface Rectangle {
   x: number;
@@ -51,6 +52,8 @@ const CanvasComponent: React.FC = () => {
   }, [context, rectangles]);
 
   const handleMouseDown = (event: MouseEvent) => {
+    if (rectangles.length >= 10) return;
+
     const rect = canvasRef.current!.getBoundingClientRect();
     setStartPos({
       x: event.clientX - rect.left,
@@ -140,22 +143,31 @@ const CanvasComponent: React.FC = () => {
     );
   };
 
+  const handleUrlChange = (index: number, url: string) => {
+    const newRectangles = [...rectangles];
+    newRectangles[index].url = url;
+    setRectangles(newRectangles);
+  };
+
   return (
-    <div className="w-screen h-screen bg-white">
-      <canvas
-        ref={canvasRef}
-        width={300}
-        height={300}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        style={{
-          border: "2px solid black",
-          borderRadius: "10px",
-          backgroundColor: "white",
-          cursor: "crosshair",
-        }}
-      />
+    <div className="w-screen h-screen bg-white flex p-8">
+      <div>
+        <canvas
+          ref={canvasRef}
+          width={300}
+          height={300}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          style={{
+            border: "2px solid black",
+            borderRadius: "10px",
+            backgroundColor: "white",
+            cursor: "crosshair",
+          }}
+        />
+      </div>
+      <RectangleInputs rectangles={rectangles} onUrlChange={handleUrlChange} />
     </div>
   );
 };
