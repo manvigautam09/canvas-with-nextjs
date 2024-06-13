@@ -129,10 +129,12 @@ const CanvasComponent: React.FC = () => {
   const isOverlapping = (newRect: Rectangle, rectangles: Rectangle[]) => {
     return rectangles.some(
       (rect) =>
-        newRect.x < rect.x + rect.width &&
-        newRect.x + newRect.width > rect.x &&
-        newRect.y < rect.y + rect.height &&
-        newRect.y + newRect.height > rect.y
+        !(
+          newRect.x + newRect.width <= rect.x ||
+          newRect.x >= rect.x + rect.width ||
+          newRect.y + newRect.height <= rect.y ||
+          newRect.y >= rect.y + rect.height
+        )
     );
   };
 
