@@ -9,10 +9,6 @@ const CanvasComponent: React.FC = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.style.width = "300px";
-      canvas.style.height = "400px";
-      canvas.style.border = "1px solid black";
-      canvas.style.backgroundColor = "white";
       const context = canvas.getContext("2d");
       if (context) {
         // Example drawing: A red rectangle
@@ -29,9 +25,18 @@ const CanvasComponent: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <canvas ref={canvasRef} width={500} height={500} />
-    </>
+    <div className="w-screen h-screen bg-white">
+      <canvas
+        ref={canvasRef}
+        width={300}
+        height={300}
+        style={{
+          border: "2px solid black",
+          borderRadius: "10px",
+          backgroundColor: "white",
+        }}
+      />
+    </div>
   );
 };
 
