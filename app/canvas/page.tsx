@@ -7,6 +7,7 @@ interface Rectangle {
   y: number;
   width: number;
   height: number;
+  url: string;
 }
 
 const CanvasComponent: React.FC = () => {
@@ -126,7 +127,7 @@ const CanvasComponent: React.FC = () => {
     const y = Math.min(startPos.y, endPos.y);
     const width = Math.abs(endPos.x - startPos.x);
     const height = Math.abs(endPos.y - startPos.y);
-    return { x, y, width, height };
+    return { x, y, width, height, url: "" };
   };
 
   const isOverlapping = (newRect: Rectangle, rectangles: Rectangle[]) => {
