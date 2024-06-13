@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, MouseEvent } from "react";
+
+interface Rectangle {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 const CanvasComponent: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -11,6 +18,7 @@ const CanvasComponent: React.FC = () => {
   const [backgroundImage, setBackgroundImage] =
     useState<HTMLImageElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [rectangles, setRectangles] = useState<Rectangle[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,9 +40,14 @@ const CanvasComponent: React.FC = () => {
       const canvas = canvasRef.current;
       if (canvas && context) {
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
+        rectangles.forEach((rect) => {
+          context.strokeStyle = "white";
+          context.lineWidth = 2;
+          context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        });
       }
     };
-  }, [context]);
+  }, [context, rectangles]);
 
   const handleMouseDown = (event: MouseEvent) => {
     const rect = canvasRef.current!.getBoundingClientRect();
@@ -49,16 +62,31 @@ const CanvasComponent: React.FC = () => {
     const canvas = canvasRef.current;
 
     if (canvas && startPos && context) {
-      const rect = canvasRef.current!.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
       const endPos = {
         x: event.clientX - rect.left,
         y: event.clientY - rect.top,
       };
       const width = endPos.x - startPos.x;
       const height = endPos.y - startPos.y;
+      const newRect: Rectangle = {
+        x: startPos.x,
+        y: startPos.y,
+        width,
+        height,
+      };
+
+      if (!isOverlapping(newRect, rectangles)) {
+        setRectangles([...rectangles, newRect]);
+      }
+
       context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
       context.drawImage(backgroundImage!, 0, 0, canvas.width, canvas.height); // Redraw the background image
-      context.strokeRect(startPos.x, startPos.y, width, height); // Draw the rectangle
+      rectangles.forEach((rect) => {
+        context.strokeStyle = "white";
+        context.lineWidth = 2;
+        context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+      });
       setStartPos(null);
       setIsDrawing(false);
     }
@@ -83,14 +111,29 @@ const CanvasComponent: React.FC = () => {
         canvasRef.current!.width,
         canvasRef.current!.height
       ); // Redraw the background image
+      rectangles.forEach((rect) => {
+        context.strokeStyle = "white";
+        context.lineWidth = 2;
+        context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+      });
 
-      // Draw the rectangle
+      // Draw the new rectangle
       const width = mouseX - startPos.x;
       const height = mouseY - startPos.y;
-      context.strokeRect(startPos.x, startPos.y, width, height);
       context.strokeStyle = "white";
       context.lineWidth = 2;
+      context.strokeRect(startPos.x, startPos.y, width, height);
     }
+  };
+
+  const isOverlapping = (newRect: Rectangle, rectangles: Rectangle[]) => {
+    return rectangles.some(
+      (rect) =>
+        newRect.x < rect.x + rect.width &&
+        newRect.x + newRect.width > rect.x &&
+        newRect.y < rect.y + rect.height &&
+        newRect.y + newRect.height > rect.y
+    );
   };
 
   return (
