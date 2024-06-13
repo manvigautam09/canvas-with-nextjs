@@ -67,14 +67,7 @@ const CanvasComponent: React.FC = () => {
         x: event.clientX - rect.left,
         y: event.clientY - rect.top,
       };
-      const width = endPos.x - startPos.x;
-      const height = endPos.y - startPos.y;
-      const newRect: Rectangle = {
-        x: startPos.x,
-        y: startPos.y,
-        width,
-        height,
-      };
+      const newRect = getNormalizedRect(startPos, endPos);
 
       if (!isOverlapping(newRect, rectangles)) {
         setRectangles([...rectangles, newRect]);
@@ -118,12 +111,22 @@ const CanvasComponent: React.FC = () => {
       });
 
       // Draw the new rectangle
-      const width = mouseX - startPos.x;
-      const height = mouseY - startPos.y;
+      const newRect = getNormalizedRect(startPos, { x: mouseX, y: mouseY });
       context.strokeStyle = "white";
       context.lineWidth = 2;
-      context.strokeRect(startPos.x, startPos.y, width, height);
+      context.strokeRect(newRect.x, newRect.y, newRect.width, newRect.height);
     }
+  };
+
+  const getNormalizedRect = (
+    startPos: { x: number; y: number },
+    endPos: { x: number; y: number }
+  ): Rectangle => {
+    const x = Math.min(startPos.x, endPos.x);
+    const y = Math.min(startPos.y, endPos.y);
+    const width = Math.abs(endPos.x - startPos.x);
+    const height = Math.abs(endPos.y - startPos.y);
+    return { x, y, width, height };
   };
 
   const isOverlapping = (newRect: Rectangle, rectangles: Rectangle[]) => {
