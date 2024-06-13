@@ -88,16 +88,8 @@ const CanvasComponent: React.FC = () => {
       const width = mouseX - startPos.x;
       const height = mouseY - startPos.y;
       context.strokeRect(startPos.x, startPos.y, width, height);
-
-      // Draw the crosshairs
-      context.beginPath();
-      context.moveTo(mouseX, 0);
-      context.lineTo(mouseX, canvasRef.current!.height);
-      context.moveTo(0, mouseY);
-      context.lineTo(canvasRef.current!.width, mouseY);
-      context.strokeStyle = "red";
-      context.lineWidth = 1;
-      context.stroke();
+      context.strokeStyle = "white";
+      context.lineWidth = 2;
     }
   };
 
@@ -114,6 +106,7 @@ const CanvasComponent: React.FC = () => {
           border: "2px solid black",
           borderRadius: "10px",
           backgroundColor: "white",
+          cursor: "crosshair",
         }}
       />
     </div>
