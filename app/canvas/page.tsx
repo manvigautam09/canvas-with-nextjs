@@ -1,6 +1,8 @@
 "use client";
 
+import { v4 as uuidv4 } from "uuid";
 import { useEffect, useRef, useState, MouseEvent } from "react";
+
 import RectangleInputs from "../components/RectangleInputs";
 
 interface Rectangle {
@@ -9,6 +11,7 @@ interface Rectangle {
   width: number;
   height: number;
   url: string;
+  id: string;
 }
 
 const CanvasComponent: React.FC = () => {
@@ -73,7 +76,11 @@ const CanvasComponent: React.FC = () => {
       };
       const newRect = getNormalizedRect(startPos, endPos);
 
-      if (!isOverlapping(newRect, rectangles)) {
+      if (
+        newRect.width > 20 &&
+        newRect.height > 20 &&
+        !isOverlapping(newRect, rectangles)
+      ) {
         setRectangles([...rectangles, newRect]);
       }
 
@@ -130,7 +137,7 @@ const CanvasComponent: React.FC = () => {
     const y = Math.min(startPos.y, endPos.y);
     const width = Math.abs(endPos.x - startPos.x);
     const height = Math.abs(endPos.y - startPos.y);
-    return { x, y, width, height, url: "" };
+    return { id: uuidv4(), x, y, width, height, url: "" };
   };
 
   const isOverlapping = (newRect: Rectangle, rectangles: Rectangle[]) => {
@@ -150,7 +157,7 @@ const CanvasComponent: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen bg-white flex p-8">
+    <div className="w-screen h-screen bg-white flex p-8 space-x-4">
       <div>
         <canvas
           ref={canvasRef}
