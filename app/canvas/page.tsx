@@ -12,7 +12,21 @@ interface Rectangle {
   height: number;
   url: string;
   id: string;
+  color: string;
 }
+
+const colors = [
+  "red",
+  "blue",
+  "green",
+  "purple",
+  "orange",
+  "cyan",
+  "magenta",
+  "yellow",
+  "pink",
+  "brown",
+];
 
 const CanvasComponent: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -46,7 +60,7 @@ const CanvasComponent: React.FC = () => {
       if (canvas && context) {
         context.drawImage(img, 0, 0, canvas.width, canvas.height);
         rectangles.forEach((rect) => {
-          context.strokeStyle = "white";
+          context.strokeStyle = rect.color;
           context.lineWidth = 2;
           context.strokeRect(rect.x, rect.y, rect.width, rect.height);
         });
@@ -81,13 +95,16 @@ const CanvasComponent: React.FC = () => {
         newRect.height > 20 &&
         !isOverlapping(newRect, rectangles)
       ) {
-        setRectangles([...rectangles, newRect]);
+        setRectangles([
+          ...rectangles,
+          { ...newRect, color: colors[rectangles.length % colors.length] },
+        ]);
       }
 
       context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
       context.drawImage(backgroundImage!, 0, 0, canvas.width, canvas.height); // Redraw the background image
       rectangles.forEach((rect) => {
-        context.strokeStyle = "white";
+        context.strokeStyle = rect.color;
         context.lineWidth = 2;
         context.strokeRect(rect.x, rect.y, rect.width, rect.height);
       });
@@ -116,14 +133,14 @@ const CanvasComponent: React.FC = () => {
         canvasRef.current!.height
       ); // Redraw the background image
       rectangles.forEach((rect) => {
-        context.strokeStyle = "white";
+        context.strokeStyle = rect.color;
         context.lineWidth = 2;
         context.strokeRect(rect.x, rect.y, rect.width, rect.height);
       });
 
       // Draw the new rectangle
       const newRect = getNormalizedRect(startPos, { x: mouseX, y: mouseY });
-      context.strokeStyle = "white";
+      context.strokeStyle = colors[rectangles.length % colors.length];
       context.lineWidth = 2;
       context.strokeRect(newRect.x, newRect.y, newRect.width, newRect.height);
     }
@@ -137,7 +154,7 @@ const CanvasComponent: React.FC = () => {
     const y = Math.min(startPos.y, endPos.y);
     const width = Math.abs(endPos.x - startPos.x);
     const height = Math.abs(endPos.y - startPos.y);
-    return { id: uuidv4(), x, y, width, height, url: "" };
+    return { id: uuidv4(), x, y, width, height, url: "", color: "" };
   };
 
   const isOverlapping = (newRect: Rectangle, rectangles: Rectangle[]) => {

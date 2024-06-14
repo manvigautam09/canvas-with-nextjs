@@ -8,6 +8,7 @@ interface Rectangle {
   width: number;
   height: number;
   url: string;
+  color: string;
 }
 
 interface RectangleInputsProps {
@@ -29,6 +30,7 @@ const RectangleInputs: React.FC<RectangleInputsProps> = ({
             value={rect.url}
             className="border border-gray-400 rounded-md h-10 focus:outline-none px-2 text-black w-48"
             onChange={(e) => onUrlChange(index, e.target.value)}
+            style={{ borderColor: rect.color }}
           />
         </div>
       ))}
