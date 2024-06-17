@@ -3,9 +3,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { useEffect, useRef, useState, MouseEvent } from "react";
 
+import Banner from "@/emails/Banner";
 import RectangleInputs from "../components/RectangleInputs";
 
-interface Rectangle {
+export interface Rectangle {
   x: number;
   y: number;
   width: number;
@@ -192,6 +193,7 @@ const CanvasComponent: React.FC = () => {
         />
       </div>
       <RectangleInputs rectangles={rectangles} onUrlChange={handleUrlChange} />
+      <Banner rectangles={rectangles} />
     </div>
   );
 };

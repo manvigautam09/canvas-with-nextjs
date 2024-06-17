@@ -1,15 +1,7 @@
 // components/RectangleInputs.tsx
 
+import { Rectangle } from "@/app/canvas/page";
 import React from "react";
-
-interface Rectangle {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  url: string;
-  color: string;
-}
 
 interface RectangleInputsProps {
   rectangles: Rectangle[];
@@ -23,7 +15,7 @@ const RectangleInputs: React.FC<RectangleInputsProps> = ({
   return (
     <div className="flex-col space-y-2 text-black">
       {rectangles.map((rect, index) => (
-        <div key={index} className="flex space-x-2 items-center">
+        <div key={rect.id} className="flex space-x-2 items-center">
           <label>Rectangle {index + 1} URL:</label>
           <input
             type="text"
