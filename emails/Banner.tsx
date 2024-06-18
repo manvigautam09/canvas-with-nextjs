@@ -4,11 +4,24 @@ import { Column, Container, Link, Row, Section } from "@react-email/components";
 import { Rectangle } from "@/app/canvas/page";
 
 interface BannerProps {
-  rectangles: Rectangle[];
+  rectangles?: Rectangle[];
 }
 
 export const Banner = (props: BannerProps) => {
-  const { rectangles } = props;
+  const {
+    rectangles = [
+      {
+        id: "33abac15-868a-41ec-a6a7-416258886239",
+        x: 32.00347137451172,
+        y: 28.00347137451172,
+        width: 149,
+        height: 97,
+        url: "https://colourpop.com/",
+        color: "red",
+      },
+    ],
+  } = props;
+  console.log("### rectangles", rectangles);
 
   return (
     <Section
@@ -17,6 +30,8 @@ export const Banner = (props: BannerProps) => {
         backgroundPosition: "center",
         width: "300px",
         height: "300px",
+
+        position: "relative",
         borderRadius: "10px",
         borderCollapse: "collapse",
         backgroundImage:
@@ -34,31 +49,21 @@ export const Banner = (props: BannerProps) => {
               display: rect.y === 0 ? "none" : "table-cell",
             }}
           ></Column>
-          <Column
-            style={{
-              padding: 0,
-              margin: 0,
-              width: `${rect.width}px`,
-              height: `${rect.height}px`,
-              border: `2px solid ${rect.color}`,
-              boxSizing: "border-box",
-              position: "relative",
-              display: "table-cell",
-            }}
-          >
+          <Column>
             <Link
               href={rect.url}
               target="_blank"
               rel="noopener noreferrer"
               style={{
                 display: "block",
-                width: "100%",
-                height: "100%",
+                width: `${rect.width}px`,
+                height: `${rect.height}px`,
                 textDecoration: "none",
                 position: "absolute",
                 top: `${rect.y}px`,
                 left: `${rect.x}px`,
                 border: "none",
+                // backgroundColor: "blue",
               }}
             ></Link>
           </Column>

@@ -38,7 +38,17 @@ const CanvasComponent: React.FC = () => {
   const [backgroundImage, setBackgroundImage] =
     useState<HTMLImageElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const [rectangles, setRectangles] = useState<Rectangle[]>([]);
+  const [rectangles, setRectangles] = useState<Rectangle[]>([
+    {
+      id: "33abac15-868a-41ec-a6a7-416258886239",
+      x: 32.00347137451172,
+      y: 28.00347137451172,
+      width: 149,
+      height: 97,
+      url: "https://colourpop.com/",
+      color: "red",
+    },
+  ]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
