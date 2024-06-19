@@ -21,7 +21,6 @@ export const Banner = (props: BannerProps) => {
       },
     ],
   } = props;
-  console.log("### rectangles", rectangles);
 
   return (
     <Section
@@ -63,7 +62,6 @@ export const Banner = (props: BannerProps) => {
                 top: `${rect.y}px`,
                 left: `${rect.x}px`,
                 border: "none",
-                // backgroundColor: "blue",
               }}
             ></Link>
           </Column>
