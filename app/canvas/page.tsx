@@ -64,7 +64,7 @@ const CanvasComponent: React.FC = () => {
       width: 86,
       height: 104,
       url: "https://colourpop.com/",
-      color: "red",
+      color: "green",
     },
   ]);
 
